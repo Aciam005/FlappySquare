@@ -33,6 +33,11 @@ class Renderer
         Pushes text onto the Text Buffer
     */
     void PushText(String text);
+
+    /*
+        @brief
+        Pushes a sprite onto the Sprite Buffer
+    */
     void PushSprite(Sprite* sprite);
 
     private:
@@ -61,7 +66,8 @@ class Renderer
     void ClearSpriteScreen();
 
 
-
+    //TODO:Add ability to remove a sprite by id
+    //TODO:Maybe the sprites should be represented by smart pointers?
 
     public:
     void Render();

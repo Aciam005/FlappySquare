@@ -2,9 +2,17 @@
 #include "Components/Constants.hpp"
 #include "Components/Colors.hpp"
 
+
 #include "SPI.h"
 #include "Adafruit_GFX.h"
 #include "math.h"
+
+Sprite* sprite;
+Sprite* sprite1;
+Sprite* sprite2;
+Sprite* sprite3;
+Sprite* sprite4;
+Sprite* sprite5;
 
 void Game::Start()
 {
@@ -23,6 +31,9 @@ void Game::Start()
   pinMode(BUTTON_LEFT_PIN,INPUT_PULLUP);
   pinMode(BUTTON_RIGHT_PIN,INPUT_PULLUP);
 
+
+  //test text and sprite drawing systems
+
   DrawText("LINE 1");
   DrawText("LINE 2");
   DrawText("LINE 3");
@@ -37,12 +48,45 @@ void Game::Start()
   DrawText("LINE 12");
   DrawText("LINE 13");
 
+  
+
+  sprite = m_SpriteManager.GetSprite(SpriteType::Test_Sprite);
+  sprite->Position.x = 50;
+  sprite->Position.y = 50;
+
+  sprite1 = m_SpriteManager.GetSprite(SpriteType::Test_Sprite);
+  sprite1->Position.x = 100;
+  sprite1->Position.y = 50;
+
+  sprite2 = m_SpriteManager.GetSprite(SpriteType::Test_Sprite);
+  sprite2->Position.x = 50;
+  sprite2->Position.y = 100;
+
+  sprite3 = m_SpriteManager.GetSprite(SpriteType::Test_Sprite);
+  sprite3->Position.x = 100;
+  sprite3->Position.y = 100;
+
+  sprite4 = m_SpriteManager.GetSprite(SpriteType::Test_Sprite);
+  sprite4->Position.x = 10;
+  sprite4->Position.y = 10;
+
+  sprite5 = m_SpriteManager.GetSprite(SpriteType::Test_Sprite);
+  sprite5->Position.x = 50;
+  sprite5->Position.y = 50;
+
+  DrawSprite(sprite);
+  DrawSprite(sprite1);
+  DrawSprite(sprite2);
+  DrawSprite(sprite3);
+  DrawSprite(sprite4);
+  DrawSprite(sprite5);
 
 }
 
 void Game::Tick(double deltaTime)
 {
     //TODO:Add FPS counter
+    Serial.println(esp_get_free_heap_size());
     Update(deltaTime);
     Draw  (deltaTime);
 }
@@ -67,6 +111,11 @@ void Game::Draw(double deltaTime)
 void Game::DrawText(String text)
 {
     m_Renderer.PushText(text);
+}
+
+void Game::DrawSprite(Sprite *sprite)
+{
+    m_Renderer.PushSprite(sprite);
 }
 
 void Game::DiagnosticTest()

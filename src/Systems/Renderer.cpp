@@ -34,7 +34,9 @@ void Renderer::PushSprite(Sprite *sprite)
     while (m_SpriteBuffer.size() > MAX_SPRITES)
     {
         //delete last element of queue until we have the max of MAX_SPRITES elements
+        Sprite* oldSprite = m_SpriteBuffer.front();
         m_SpriteBuffer.pop_front();
+        free(oldSprite);
     }
 
 }
@@ -65,6 +67,8 @@ void Renderer::RenderTextBuffer()
 
 void Renderer::RenderSpriteBuffer()
 {
+    Serial.println(m_SpriteBuffer.size());
+
     //draw a line to differentiate between the text and sprite(image) parts of the screen
     m_SpriteCanvas.drawFastHLine(0,0,240,WHITE);
 
