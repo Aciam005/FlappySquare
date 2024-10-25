@@ -42,6 +42,7 @@ void Game::Start()
 
 void Game::Tick(double deltaTime)
 {
+    //TODO:Add FPS counter
     Update(deltaTime);
     Draw  (deltaTime);
 }

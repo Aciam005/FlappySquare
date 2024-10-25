@@ -8,3 +8,5 @@
 
 //how many choices should the display draw?
 #define MAX_CHOICE_LINES 4
+
+#define MAX_SPRITES 5
