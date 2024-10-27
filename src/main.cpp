@@ -24,7 +24,7 @@ void loop()
 
   game.Tick(m_DeltaTime);
 
-  delay(166);
+  delay(166);//target 60 fps
   m_EndTime = millis();
 }
 

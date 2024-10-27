@@ -26,10 +26,23 @@ void Renderer::PushText(const String text)
     }
 }
 
+void Renderer::PushSprite(Sprite *sprite)
+{
+    m_SpriteBuffer.push_back(sprite);
+
+
+    while (m_SpriteBuffer.size() > MAX_SPRITES)
+    {
+        //delete last element of queue until we have the max of MAX_SPRITES elements
+        Sprite* oldSprite = m_SpriteBuffer.front();
+        m_SpriteBuffer.pop_front();
+        free(oldSprite);
+    }
+
+}
+
 void Renderer::RenderTextBuffer()
 {   
-    
-    
     if(!m_TextBuffer.empty())
     {
         for(int i = 1;i <= m_TextBuffer.size();i++)
@@ -44,18 +57,32 @@ void Renderer::RenderTextBuffer()
             m_TextBuffer.pop_front();
             m_TextBuffer.push_back(newString);
         }
-        //TODO:this works??
-        //m_Display->fillScreen(BLACK);
-        
-        m_Display->drawBitmap(0,0,m_TextCanvas.getBuffer(),240,160,WHITE);
-        RenderSpriteBuffer();
     }
+
+    m_Display->drawBitmap(0,0,m_TextCanvas.getBuffer(),240,160,WHITE);
 
 }
 
 void Renderer::RenderSpriteBuffer()
 {
+    //draw a line to differentiate between the text and sprite(image) parts of the screen
     m_SpriteCanvas.drawFastHLine(0,0,240,WHITE);
+
+    if(!m_SpriteBuffer.empty())
+    {
+        for(int i = 0;i <= m_SpriteBuffer.size();i++)
+        {
+            Sprite* newSprite = m_SpriteBuffer.front();
+
+            m_SpriteCanvas.drawXBitmap(newSprite->Position.x,newSprite->Position.y,
+                                      newSprite->SpriteBitmap,
+                                      newSprite->Size.x,newSprite->Size.y,
+                                      WHITE);
+
+            m_SpriteBuffer.pop_front();
+            m_SpriteBuffer.push_back(newSprite);
+        }
+    }
 
     m_Display->drawBitmap(0,161,m_SpriteCanvas.getBuffer(),240,160,WHITE);
 }
@@ -63,15 +90,20 @@ void Renderer::RenderSpriteBuffer()
 void Renderer::ClearTextScreen()
 {
     m_TextCanvas.fillScreen(BLACK);
-    m_Display->drawBitmap(0,0,m_TextCanvas.getBuffer(),240,160,WHITE);
+}
+
+void Renderer::ClearSpriteScreen()
+{
+    m_SpriteCanvas.fillScreen(BLACK);
 }
 
 void Renderer::Render()
 {
-    Serial.println("RENDER");
     ClearTextScreen();
     RenderTextBuffer();
+    
 
-    //TODO:Clear Sprite Buffer
+    ClearSpriteScreen();
     RenderSpriteBuffer();
+    
 }
