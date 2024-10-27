@@ -3,6 +3,7 @@
 #include <Components/PinDefinitions.hpp>
 #include "Systems/Renderer.hpp"
 #include "Systems/SpriteManager.hpp"
+#include "SceneManager.hpp"
 
 class Game
 {
@@ -57,7 +58,7 @@ class Game
 
     /*
         @brief
-        The Renderer handles all rendering to the tft display
+        The Renderer handles all rendering to the tft display(use this to render specific elements to the screen,like UI)
     */
     Renderer m_Renderer{&m_Display};
 
@@ -66,6 +67,13 @@ class Game
         The SpriteManager stores all sprite data (as unsigned char arrays)
     */
     SpriteManager m_SpriteManager;
+
+    /*
+        @brief
+        The SceneManager handles all scene drawing(use this to render levels)
+    */
+
+    SceneManager m_SceneManager;
 
     /*
         @brief

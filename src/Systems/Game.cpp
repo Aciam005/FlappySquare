@@ -1,18 +1,53 @@
 #include "Game.hpp"
+
 #include "Components/Constants.hpp"
 #include "Components/Colors.hpp"
+#include "Components/SceneData.hpp"
+
+#include "Systems/SceneManager.hpp"
 
 
 #include "SPI.h"
 #include "Adafruit_GFX.h"
 #include "math.h"
 
-Sprite* sprite;
-Sprite* sprite1;
-Sprite* sprite2;
-Sprite* sprite3;
-Sprite* sprite4;
-Sprite* sprite5;
+//testing purposes,will be removed later
+
+String scene1_Text[10] = 
+{
+    "Muie Furtuna",
+    "-",
+    "ETTI",
+    "-",
+    "NICUSOR DANICU",
+    "-",
+    "TEST",
+    "-",
+    "-",
+    "MAI TESTAM",
+};
+
+//testing purposes,will be removed later
+String scene2_Text[10]
+{
+    "SCENA 2",
+    "SCENA 2",
+    "SCENA 2",
+    "SCENA 2",
+    "SCENA 2",
+    "SCENA 2",
+    "SCENA 2",
+    "SCENA 2",
+    "SCENA 2",
+    "SCENA 2",
+};
+
+//testing purposes,will be removed later
+SceneData scene1{1,scene1_Text,10,nullptr,0};
+SceneData scene2{2,scene2_Text,10,nullptr,0};
+
+//testing purposes,will be removed later
+bool test = false;
 
 void Game::Start()
 {
@@ -31,55 +66,10 @@ void Game::Start()
   pinMode(BUTTON_LEFT_PIN,INPUT_PULLUP);
   pinMode(BUTTON_RIGHT_PIN,INPUT_PULLUP);
 
+  m_SceneManager.PushSceneData(&scene1);
+  m_SceneManager.PushSceneData(&scene2);
 
-  //test text and sprite drawing systems
-
-  DrawText("LINE 1");
-  DrawText("LINE 2");
-  DrawText("LINE 3");
-  DrawText("LINE 4");
-  DrawText("LINE 5");
-  DrawText("LINE 6");
-  DrawText("LINE 7");
-  DrawText("LINE 8");
-  DrawText("LINE 9");
-  DrawText("LINE 10");
-  DrawText("LINE 11");
-  DrawText("LINE 12");
-  DrawText("LINE 13");
-
-  
-
-  sprite = m_SpriteManager.GetSprite(SpriteType::Test_Sprite);
-  sprite->Position.x = 50;
-  sprite->Position.y = 50;
-
-  sprite1 = m_SpriteManager.GetSprite(SpriteType::Test_Sprite);
-  sprite1->Position.x = 100;
-  sprite1->Position.y = 50;
-
-  sprite2 = m_SpriteManager.GetSprite(SpriteType::Test_Sprite);
-  sprite2->Position.x = 50;
-  sprite2->Position.y = 100;
-
-  sprite3 = m_SpriteManager.GetSprite(SpriteType::Test_Sprite);
-  sprite3->Position.x = 100;
-  sprite3->Position.y = 100;
-
-  sprite4 = m_SpriteManager.GetSprite(SpriteType::Test_Sprite);
-  sprite4->Position.x = 10;
-  sprite4->Position.y = 10;
-
-  sprite5 = m_SpriteManager.GetSprite(SpriteType::Test_Sprite);
-  sprite5->Position.x = 50;
-  sprite5->Position.y = 50;
-
-  DrawSprite(sprite);
-  DrawSprite(sprite1);
-  DrawSprite(sprite2);
-  DrawSprite(sprite3);
-  DrawSprite(sprite4);
-  DrawSprite(sprite5);
+  m_SceneManager.LoadScene(1);
 
 }
 
@@ -87,6 +77,7 @@ void Game::Tick(double deltaTime)
 {
     //TODO:Add FPS counter
     Serial.println(esp_get_free_heap_size());
+
     Update(deltaTime);
     Draw  (deltaTime);
 }
@@ -98,13 +89,24 @@ void Game::Update(double deltaTime)
 
 void Game::Draw(double deltaTime)
 {
-    //TODO:Find a way to write good text without clearing the whole screen :(
+    //TODO:Find a way to write text without clearing the whole screen :(
     m_LocalScreenClearInterval += deltaTime;
     if(m_LocalScreenClearInterval > m_ScreenClearInterval)
     {
         m_Display.fillScreen(BLACK);
-        m_Renderer.Render();
+        m_SceneManager.RenderCurrentScene(&m_Renderer);
         m_LocalScreenClearInterval = 0;
+
+        //testing purposes,will be removed later
+        if(test)
+        {
+            test = !test;
+            m_SceneManager.LoadScene(1);
+        }else
+        {
+            test = !test;
+            m_SceneManager.LoadScene(2);
+        }
     }
 }
 

@@ -57,8 +57,6 @@ void Renderer::RenderTextBuffer()
             m_TextBuffer.pop_front();
             m_TextBuffer.push_back(newString);
         }
-        //TODO:this works??
-        //m_Display->fillScreen(BLACK);
     }
 
     m_Display->drawBitmap(0,0,m_TextCanvas.getBuffer(),240,160,WHITE);
@@ -67,8 +65,6 @@ void Renderer::RenderTextBuffer()
 
 void Renderer::RenderSpriteBuffer()
 {
-    Serial.println(m_SpriteBuffer.size());
-
     //draw a line to differentiate between the text and sprite(image) parts of the screen
     m_SpriteCanvas.drawFastHLine(0,0,240,WHITE);
 
